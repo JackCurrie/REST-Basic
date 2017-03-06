@@ -1,12 +1,12 @@
 
-from flask import jsonify
-from flask.ext.restful import Resource
+from flask import jsonify, Blueprint
+from flask.ext.restful import Resource, Api
 
 import models
 
 
 class ReviewList(Resource):
-    def getSelf(self):
+    def get(self):
         return jsonify({'reviews': [{'course': 1, 'Rating': 5}]})
 
 
@@ -20,3 +20,16 @@ class Review(Resource):
     def delete(self, id):
         return jsonify({'course': 1, 'Rating': 5})
 
+
+reviews_api = Blueprint('resources.reviews', __name__)
+api = Api(reviews_api)
+api.add_resource(
+    ReviewList,
+    '/reviews',
+    endpoint='reviews'
+)
+api.add_resource(
+    Review,
+    '/reviews/<int:id>',
+    endpoint='review'
+)
